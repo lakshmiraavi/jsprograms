@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <form style="text-align: center;">
+        <input type="text" id="fname" placeholder="Enter firstname"><br><br>
+        <input type="text" id="lname" placeholder="Enter lastname"><br><br>
+        <input type="text" id="age" placeholder="Enter Age"><br><br>
+        <input type="email" id="email" placeholder="Enter Email"><br><br>
+        <input type="submit" id="submit">
+    </form>
+
+    <table border="1" cellspacing="5" cellpadding="3">
+        <thead>
+            <tr >
+                <th>fname</th>
+                <th>lname</th>
+
+            </tr>
+            
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+    </table>
+    <script>
+
+        var fname = document.getElementById("fname");
+        var lname = document.getElementById('lname');
+        var age = document.getElementById('age');
+        var email = document.getElementById('email');
+
+        var arr = [];
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            var myobj = {
+                firstname: fname.value,
+                lastname: lname.value,
+                age: age.value,
+                email: email.value
+            }
+            console.log(myobj);
+
+            arr.push(myobj);
+            console.log(arr);
+            localStorage.setItem('array', JSON.stringify(arr));
+            const value = localStorage.getItem('array');
+            let val = JSON.parse(value);
+            console.log(val)
+            let tbody = document.getElementById('tbody');
+
+            let tr = document.createElement('tr');
+            let td = document.createElement('td');
+
+            tbody.appendChild(tr);
+            tr.appendChild(td);
+
+            let tr1 = document.createElement('tr');
+            let td1 = document.createElement('td');
+
+            val.map((ele) => {
+                tr.innerText = ele.firstname
+                tr.innerText = ele.lastname
+            })
+
+
+
+        })
+
+
+    </script>
+</body>
+
+</html>
