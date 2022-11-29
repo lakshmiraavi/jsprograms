@@ -11,66 +11,98 @@
 
 <body>
     <form style="text-align: center;">
-        <input type="text" id="fname" placeholder="Enter firstname"><br><br>
-        <input type="text" id="lname" placeholder="Enter lastname"><br><br>
-        <input type="text" id="age" placeholder="Enter Age"><br><br>
-        <input type="email" id="email" placeholder="Enter Email"><br><br>
-        <input type="submit" id="submit">
+        <input type="text" id="fname" placeholder="Enter name"><br><br>
+        <input type="text" id="hsptl" placeholder="Enter Hospital name"><br><br>
+        <label>Enter date:</label>
+        <input type="date" id="date" placeholder="Enter Date"><br><br>
+        <input type="text" id="sp" placeholder="Enter Specialisation"><br><br>
+        <input type="submit" id="submit"><br><br>
     </form>
+    <center>
+        <table border="1" cellspacing="5" cellpadding="3">
 
-    <table border="1" cellspacing="5" cellpadding="3">
-        <thead>
-            <tr >
-                <th>fname</th>
-                <th>lname</th>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Hospital</th>
+                    <th>Date</th>
+                    <th>Specialisation</th>
 
-            </tr>
-            
-        </thead>
-        <tbody id="tbody">
+                </tr>
 
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="tbody">
+
+            </tbody>
+
+        </table>
+    </center>
     <script>
 
         var fname = document.getElementById("fname");
-        var lname = document.getElementById('lname');
-        var age = document.getElementById('age');
-        var email = document.getElementById('email');
+        var hsptl = document.getElementById('hsptl');
+        var date = document.getElementById('date');
+        var sp = document.getElementById('sp');
 
         var arr = [];
         const form = document.querySelector('form');
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            var myobj = {
-                firstname: fname.value,
-                lastname: lname.value,
-                age: age.value,
-                email: email.value
+            function Doctor(username, hospital, date, spc) {
+                this.uname = username,
+                    this.hospital = hospital,
+                    this.udate = date,
+                    this.spc = spc
             }
-            console.log(myobj);
 
-            arr.push(myobj);
+
+            var doctor = new Doctor(fname.value, hsptl.value, date.value, sp.value);
+
+            console.log(Doctor);
+
+            arr.push(doctor);
             console.log(arr);
+
+            fname.value = "";
+            hsptl.value = "";
+            date.value = "";
+            sp.value = "";
+
             localStorage.setItem('array', JSON.stringify(arr));
             const value = localStorage.getItem('array');
             let val = JSON.parse(value);
-            console.log(val)
-            let tbody = document.getElementById('tbody');
+            console.log(val);
 
+            let tbody = document.getElementById('tbody');
+            tbody.innerText=""
+
+            val.map((ele) => {
             let tr = document.createElement('tr');
             let td = document.createElement('td');
+            let td1 = document.createElement('td');
+            let td2 = document.createElement('td');
+            let td3 = document.createElement('td');
 
             tbody.appendChild(tr);
             tr.appendChild(td);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
 
-            let tr1 = document.createElement('tr');
-            let td1 = document.createElement('td');
-
-            val.map((ele) => {
-                tr.innerText = ele.firstname
-                tr.innerText = ele.lastname
+            td.innerText = ele.uname
+            td1.innerText = ele.hospital
+            td2.innerText = ele.udate
+            td3.innerText = ele.spc
+            tr.addEventListener("click", () => {
+                 //e.preventDefault();
+                    alert("Doctor: "+ele.uname+" and his specialisation is: "+  ele.spc);
+             })    
             })
+
+
+
+
+
 
 
 
