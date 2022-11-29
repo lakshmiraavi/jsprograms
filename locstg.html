@@ -26,7 +26,7 @@
                     <th>Name</th>
                     <th>Hospital</th>
                     <th>Date</th>
-                    <th>Specialisation</th>
+                    <th>Specialisation</th>  
 
                 </tr>
 
@@ -67,7 +67,6 @@
             hsptl.value = "";
             date.value = "";
             sp.value = "";
-
             localStorage.setItem('array', JSON.stringify(arr));
             const value = localStorage.getItem('array');
             let val = JSON.parse(value);
@@ -81,7 +80,7 @@
             let td = document.createElement('td');
             let td1 = document.createElement('td');
             let td2 = document.createElement('td');
-            let td3 = document.createElement('td');
+            let td3 = document.createElement('button');
 
             tbody.appendChild(tr);
             tr.appendChild(td);
@@ -92,10 +91,10 @@
             td.innerText = ele.uname
             td1.innerText = ele.hospital
             td2.innerText = ele.udate
-            td3.innerText = ele.spc
-            tr.addEventListener("click", () => {
+            td3.innerText = "click to know specialisation"
+            td3.addEventListener("click", () => {
                  //e.preventDefault();
-                    alert("Doctor: "+ele.uname+" and his specialisation is: "+  ele.spc);
+                    alert("Doctor: "+ele.uname+" and specialisation is: "+  ele.spc);
              })    
             })
 
