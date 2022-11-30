@@ -6,37 +6,89 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .input {
+           
+            width: 250px;
+            margin: auto;
+            padding: 10px;
+            box-shadow: 3px 3px 3px 3px rgb(138, 138, 236);;
+            background-color: rgb(188, 188, 231);
+            border-radius: 20%;
+            align-content: center;
+        }
+
+        .div2{
+            
+            width:40%;
+            height: 100%;
+            margin: auto;
+            padding:10px;
+            box-shadow: 3px 3px 3px 3px rgb(5, 187, 211);
+            background-color: rgb(137, 234, 247);
+            border-radius: 15%;
+            align-content: center;
+            text-align: center;
+        }
+        th,td{
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid rgb(5, 187, 211);;
+        
+        } 
+        td:hover{
+            background-color: rgb(211, 211, 236);
+        }
+        table{
+            width: 60%;
+            text-align: center;
+            background-color:beige ;
+            border-radius: 10%;
+        }
+    </style>
 
 </head>
 
 <body>
-    <form style="text-align: center;">
-        <input type="text" id="fname" placeholder="Enter name"><br><br>
-        <input type="text" id="hsptl" placeholder="Enter Hospital name"><br><br>
-        <label>Enter date:</label>
-        <input type="date" id="date" placeholder="Enter Date"><br><br>
-        <input type="text" id="sp" placeholder="Enter Specialisation"><br><br>
-        <input type="submit" id="submit"><br><br>
-    </form>
-    <center>
-        <table border="1" cellspacing="5" cellpadding="3">
+    <div class="container">
+        <form style="text-align: center;" class="input">
+            <input type="text" id="fname" placeholder="Enter name"><br><br>
+            <input type="text" id="hsptl" placeholder="Enter Hospital name"><br><br>
 
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Hospital</th>
-                    <th>Date</th>
-                    <th>Specialisation</th>  
+            <input type="date" id="date" placeholder="Enter Date"><br><br>
+            <input type="text" id="sp" placeholder="Enter Specialisation"><br><br>
+            <input type="submit" id="submit"><br><br>
+        </form>
+    </div><br><br>
+    <div class="div2">
+        <center>
+            <table  cellspacing="10" cellpadding="5">
 
-                </tr>
+                <thead id="thead"></thead>
+                <tbody id="tbody" onclick="myFunction(e)"></tbody>
+            </table>
+        </center>
 
-            </thead>
-            <tbody id="tbody">
-
-            </tbody>
-
-        </table>
-    </center>
+    </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body customMsg">
+                    <p>This is a small modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
 
         var fname = document.getElementById("fname");
@@ -45,6 +97,81 @@
         var sp = document.getElementById('sp');
 
         var arr = [];
+        
+        if (localStorage.getItem('array') !== null) {
+            const value = localStorage.getItem('array');
+            let data=JSON.parse(value);
+           let thead = document.getElementById('thead');
+            let tbody = document.getElementById('tbody');
+            // tbody.innerText=""
+            arr = [...data]
+
+            let tr = document.createElement('tr');
+                thead.appendChild(tr);
+
+                let nme = document.createElement('th');
+                let hosp = document.createElement('th');
+                let dte = document.createElement('th');
+                
+
+
+                tr.appendChild(nme);
+                tr.appendChild(hosp);
+                tr.appendChild(dte);
+                
+
+                nme.innerText = "Name"
+                hosp.innerText = "Hospital"
+                dte.innerText = "Date"
+
+                data.map((ele) => {
+                
+
+                let tr1 = document.createElement('tr');
+                tbody.appendChild(tr1);
+
+                let nme1 = document.createElement('td');
+                let hosp1 = document.createElement('td');
+                let dte1 = document.createElement('td');
+                
+                tr1.appendChild(nme1);
+                tr1.appendChild(hosp1);
+                tr1.appendChild(dte1);
+                
+
+                nme1.id='nameid';
+                hosp1.id='hospid';
+                dte1.id='dateid';
+
+                nme1.innerText = ele.uname;
+                hosp1.innerText = ele.hospital;
+                dte1.innerText = ele.udate;
+
+                tr1.setAttribute("data-target", "#myModal");
+                tr1.setAttribute("data-toggle", "modal");
+                
+                tr1.onclick = function (e) {
+                    if(e.target.id=='nameid'){
+                    $("#myModal .customMsg").html("specialisation : " + ele.spc);
+                    $("#myModal .modal-title").html("Doctor Information : " + ele.uname)
+                    }
+
+                    if(e.target.id=='hospid'){
+                    $("#myModal .customMsg").html("Hospital : "+ele.hospital+"<br><br>"+" Specialisation : " + ele.spc);
+                    $("#myModal .modal-title").html("Doctor Information: " + ele.uname )
+                    }
+
+                    if(e.target.id=='dateid'){
+                    $("#myModal .customMsg").html("Hospital : "+ele.hospital+"<br><br>"+"Date of Join : "+ele.udate+"<br><br>"+"specialisation : " + ele.spc);
+                    $("#myModal .modal-title").html("Doctor Information: " + ele.uname)
+                    }
+                }
+                
+                   
+            })
+
+
+        }
         const form = document.querySelector('form');
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -67,45 +194,87 @@
             hsptl.value = "";
             date.value = "";
             sp.value = "";
+
             localStorage.setItem('array', JSON.stringify(arr));
             const value = localStorage.getItem('array');
             let val = JSON.parse(value);
             console.log(val);
 
+            let thead = document.getElementById('thead');
+            thead.innerText="";
             let tbody = document.getElementById('tbody');
             tbody.innerText=""
+           // arr = [...data]
+            
+                let tr = document.createElement('tr');
+                thead.appendChild(tr);
+
+                let nme = document.createElement('th');
+                let hosp = document.createElement('th');
+                let dte = document.createElement('th');
+                
+
+
+                tr.appendChild(nme);
+                tr.appendChild(hosp);
+                tr.appendChild(dte);
+                
+
+                nme.innerText = "Name"
+                hosp.innerText = "Hospital"
+                dte.innerText = "Date"
 
             val.map((ele) => {
-            let tr = document.createElement('tr');
-            let td = document.createElement('td');
-            let td1 = document.createElement('td');
-            let td2 = document.createElement('td');
-            let td3 = document.createElement('button');
+        
+                let tr1 = document.createElement('tr');
+                tbody.appendChild(tr1);
 
-            tbody.appendChild(tr);
-            tr.appendChild(td);
-            tr.appendChild(td1);
-            tr.appendChild(td2);
-            tr.appendChild(td3);
+                let nme1 = document.createElement('td');
+                let hosp1 = document.createElement('td');
+                let dte1= document.createElement('td');
+               
 
-            td.innerText = ele.uname
-            td1.innerText = ele.hospital
-            td2.innerText = ele.udate
-            td3.innerText = "click to know specialisation"
-            td3.addEventListener("click", () => {
-                 //e.preventDefault();
-                    alert("Doctor: "+ele.uname+" and specialisation is: "+  ele.spc);
-             })    
+
+                tr1.appendChild(nme1);
+                tr1.appendChild(hosp1);
+                tr1.appendChild(dte1);
+                
+
+                nme1.id='nameid';
+                hosp1.id='hospid';
+                dte1.id='dateid';
+
+                nme1.innerText = ele.uname
+                hosp1.innerText = ele.hospital
+                dte1.innerText = ele.udate
+                
+                tr1.setAttribute("data-target", "#myModal");
+                tr1.setAttribute("data-toggle", "modal");
+                
+                tbody.onclick = function (e) {
+                    if(e.target.id=='nameid'){
+                    $("#myModal .customMsg").html("specialisation : " + ele.spc);
+                    $("#myModal .modal-title").html("Doctor information: " + ele.uname)
+                    }
+                    if(e.target.id=='hospid'){
+                    $("#myModal .customMsg").html("Hospital : "+ele.hospital+"<br><br>"+"specialisation : " + ele.spc);
+                    $("#myModal .modal-title").html("Doctor Information : " + ele.uname )
+                    }
+                    if(e.target.id=='dateid'){
+                    $("#myModal .customMsg").html("Hospital : "+ele.hospital+"<br><br>"+"Date of Join : "+ele.udate+"<br><br>"+"specialisation : " + ele.spc);
+                    $("#myModal .modal-title").html("Doctor Information: " + ele.uname)
+                    }
+                    
+                }
+                      }) 
+
             })
 
 
 
 
 
-
-
-
-        })
+        
 
 
     </script>
